@@ -1,5 +1,4 @@
 @import "tailwindcss";
-
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,8 +18,38 @@
   }
 }
 
+/* 动态背景动画 */
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* 文字动态出现动画 */
+@keyframes textFadeIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.dynamic-bg {
+  background: linear-gradient(120deg, #0a0a0a, #1e1e2f, #2a2a3b);
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* 可选：应用于文字的动画类 */
+.text-animate {
+  animation: textFadeIn 1.5s ease-out forwards;
 }
