@@ -1,7 +1,14 @@
-const Dapp = () => {
-  return <>
-    Dapp
-  </>
-}
+import MetaMaskCard from '@/components/connectCards/MetaMaskCard';
+// import InfoContractInterface from './components/Contracts';
 
-export default Dapp
+const DApp = () => {
+  return (
+    <>
+      <MetaMaskCard />
+      <hr />
+      {/* <InfoContractInterface /> */}
+    </>
+  );
+};
+
+export default DApp;

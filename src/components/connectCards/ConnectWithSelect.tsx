@@ -1,8 +1,9 @@
+'use client';
 import type { Web3ReactHooks } from '@web3-react/core';
 import type { MetaMask } from '@web3-react/metamask';
 import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 
-import { CHAINS, getAddChainParameters } from '@utils/chains';
+import { CHAINS, getAddChainParameters } from '@/utils/chains';
 
 function ChainSelect({
   activeChainId,

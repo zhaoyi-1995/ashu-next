@@ -1,5 +1,4 @@
 import Header from '@/components/Header';
-import { memo } from 'react';
 
 function DappLayout({
   children,
@@ -9,11 +8,11 @@ function DappLayout({
   return (
     <>
       <Header />
-      <main>
+      <main className='pt-18'>
         {children}
       </main>
     </>
   );
 };
 
-export default memo(DappLayout);
+export default DappLayout;

@@ -1,3 +1,4 @@
+'use client';
 import type { BigNumber } from '@ethersproject/bignumber';
 import type { Web3ReactHooks } from '@web3-react/core';
 import { useEffect, useState } from 'react';

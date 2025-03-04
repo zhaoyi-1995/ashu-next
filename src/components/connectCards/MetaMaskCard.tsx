@@ -1,3 +1,4 @@
+'use client';
 import { useEffect, useState } from 'react';
 import { hooks, metamask } from '@/connector/metaMask';
 import { Card } from './Card';
