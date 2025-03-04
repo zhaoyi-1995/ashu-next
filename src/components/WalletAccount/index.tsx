@@ -2,6 +2,7 @@
 import type { BigNumber } from '@ethersproject/bignumber';
 import type { Web3ReactHooks } from '@web3-react/core';
 import { useEffect, useState } from 'react';
+import { formatContractAddress } from '@/utils/format';
 
 function useBalances(
   provider?: ReturnType<Web3ReactHooks['useProvider']>,
@@ -49,7 +50,7 @@ export function Accounts({
           ? 'None'
           : accounts?.map((account, i) => (
               <ul key={account} style={{ margin: 0, overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {ENSNames?.[i] ?? account}
+                {ENSNames?.[i] ?? formatContractAddress(account)}
                 {balances?.[i] ? ` (Ξ${balances[i].toString()})` : null}
               </ul>
             ))}
