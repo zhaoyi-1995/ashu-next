@@ -1,17 +1,22 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useWalletStore } from '@/store/common';
 import { metamask } from '@/connector/metaMask';
 import { WalletButton } from '@/components/WalletButton';
+import { useEffect } from 'react';
 
 const Header = () => {
-  const { isConnected, toggleConnection } = useWalletStore();
   const pathname = usePathname();
   const getLinkClass = (path: string) =>
     pathname === path
       ? 'text-indigo-400'
       : 'text-white hover:text-indigo-400';
+    
+  useEffect(() => {
+    metamask.connectEagerly().catch(() => {
+      console.debug('Failed to connect eagerly to metamask');
+    });
+  }, []);
 
   return (
     <header className="fixed top-0 left-0 w-full flex items-center justify-between p-4 bg-gray-900/90 backdrop-blur-md text-white z-10">
