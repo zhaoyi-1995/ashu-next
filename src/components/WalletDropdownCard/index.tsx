@@ -2,8 +2,8 @@
 import type { MetaMask } from '@web3-react/metamask';
 import { useWalletConnect } from '@/connector/useWalletConnect';
 import { CHAINS } from '@/utils/chains';
-import { Accounts } from '@/components/connectCards/Accounts';
-import { Status } from '@/components/connectCards/Status';
+import { Accounts } from '@/components/WalletAccount';
+import { Status } from '@/components/WalletStatus';
 import { hooks } from '@/connector/metaMask';
 
 const { useAccounts, useProvider, useENSNames } = hooks;
