@@ -6,6 +6,11 @@ import { getAddChainParameters } from '@/utils/chains';
 
 const { useChainId, useIsActivating, useIsActive } = hooks;
 
+// 定义 EthereumProvider 类型
+interface EthereumProvider {
+  request: (args: { method: string; params?: any[] }) => Promise<any>;
+}
+
 export function useWalletConnect(connector: MetaMask) {
   const chainId = useChainId();
   const isActivating = useIsActivating();
@@ -13,16 +18,22 @@ export function useWalletConnect(connector: MetaMask) {
   const [error, setError] = useState<Error | undefined>(undefined);
   const [desiredChainId, setDesiredChainId] = useState<number>(0);
 
-  // 自动更新 desiredChainId
   useEffect(() => {
     if (chainId && (!desiredChainId || desiredChainId === -1)) {
       setDesiredChainId(chainId);
     }
   }, [desiredChainId, chainId]);
 
-  // 切换链或连接钱包
   const connectWallet = useCallback(
     async (chainId?: number) => {
+      // 显式声明类型
+      const ethereum = window.ethereum as EthereumProvider | undefined;
+
+      if (!ethereum) {
+        setError(new Error('MetaMask is not installed'));
+        return;
+      }
+
       const targetChainId = chainId ?? desiredChainId;
       setDesiredChainId(targetChainId);
 
@@ -32,6 +43,9 @@ export function useWalletConnect(connector: MetaMask) {
           return;
         }
 
+        // 使用显式类型调用 request
+        await ethereum.request({ method: 'eth_requestAccounts' });
+
         if (targetChainId === -1) {
           await connector.activate();
         } else {
@@ -39,13 +53,13 @@ export function useWalletConnect(connector: MetaMask) {
         }
         setError(undefined);
       } catch (err) {
+        console.error('Failed to connect wallet:', err);
         setError(err as Error);
       }
     },
     [connector, chainId, desiredChainId],
   );
 
-  // 断开钱包
   const disconnectWallet = useCallback(async () => {
     if (connector?.deactivate) {
       await connector.deactivate();
@@ -56,10 +70,9 @@ export function useWalletConnect(connector: MetaMask) {
     setError(undefined);
   }, [connector]);
 
-  // 自动尝试恢复连接
   useEffect(() => {
-    connector.connectEagerly().catch(() => {
-      console.debug('Failed to connect eagerly to MetaMask');
+    connector.connectEagerly().catch((err) => {
+      console.debug('Failed to connect eagerly to MetaMask:', err);
     });
   }, [connector]);
 
