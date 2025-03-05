@@ -1,0 +1,3 @@
+name = "states-worker"
+compatibility_date = "2025-03-05"
+main = "states-worker.js"
