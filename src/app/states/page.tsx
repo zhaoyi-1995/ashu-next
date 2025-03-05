@@ -25,7 +25,7 @@ export default async function StatesPage() {
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
       <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-4">States Data (SSR)</h1>
+        <h1 className="text-2xl font-bold mb-4">测试SSR</h1>
         {error && <p className="text-red-600">Error: {error}</p>}
         {data ? (
           <div className="p-4 bg-gray-50 rounded-lg">
