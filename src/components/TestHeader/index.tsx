@@ -1,8 +1,11 @@
-// src/components/Header.tsx
-import { Link, useLocation } from 'react-router-dom';
+// app/components/Header.tsx
+'use client'; // 因为使用了 usePathname，需要标记为客户端组件
+
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const TestHeader = () => {
-  const location = useLocation(); // 获取当前路由路径
+  const pathname = usePathname(); // 获取当前路由路径，替代 useLocation
 
   // 定义导航项
   const navItems = [
@@ -16,7 +19,7 @@ const TestHeader = () => {
       <nav className="container mx-auto flex items-center justify-between">
         {/* Logo 或标题 */}
         <div className="text-xl font-bold">
-          <Link to="/" className="hover:text-blue-300">
+          <Link href="/" className="hover:text-blue-300">
             My App
           </Link>
         </div>
@@ -26,9 +29,9 @@ const TestHeader = () => {
           {navItems.map(item => (
             <li key={item.path}>
               <Link
-                to={item.path}
+                href={item.path}
                 className={`px-3 py-2 rounded-md transition-colors ${
-                  location.pathname === item.path
+                  pathname === item.path
                     ? 'bg-blue-600 text-white'
                     : 'hover:bg-gray-700 hover:text-blue-300'
                 }`}
