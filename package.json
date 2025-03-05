@@ -13,6 +13,7 @@
     "@web3-react/core": "^8.2.3",
     "@web3-react/metamask": "^8.2.4",
     "@web3-react/types": "^8.2.3",
+    "ethers": "5.7.2",
     "eventemitter3": "^5.0.1",
     "next": "15.2.1",
     "react": "^19.0.0",
