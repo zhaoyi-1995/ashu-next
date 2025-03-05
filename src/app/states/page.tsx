@@ -2,7 +2,7 @@ import { headers } from 'next/headers'; // 用于触发动态渲染
 
 async function fetchStatesData() {
   // 在服务器端调用 mock API
-  const response = await fetch((process.env.NEXT_PUBLIC_BASE_URL || '') + '/api/states-data', {
+  const response = await fetch('http://localhost:3000/api/states-data', {
     cache: 'no-store', // 确保每次请求都获取最新数据
   });
   if (!response.ok) throw new Error('Failed to fetch states data');
