@@ -5,8 +5,17 @@ const nextConfig: NextConfig = {
   swcMinify: true,
   webpack(config) {
     config.optimization.splitChunks = {
-      chunks: 'all', // 对所有 chunk 进行分割
-      maxSize: 1000000, // 每个 chunk 最大 1MB，强制分割大文件
+      chunks: 'all',
+      maxSize: 500000, // 减小到 500KB，进一步强制分割
+      minSize: 100000, // 最小 100KB，避免生成过小文件
+      cacheGroups: {
+        default: false, // 禁用默认分组
+        vendors: {
+          test: /[\\/]node_modules[\\/]/, // 单独打包 node_modules 的依赖
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
     };
     return config;
   },
