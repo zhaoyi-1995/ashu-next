@@ -24,11 +24,11 @@ export default async function StatesPage() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
-      <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
+      <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg text-gray-900">
         <h1 className="text-2xl font-bold mb-4">测试SSR</h1>
         {error && <p className="text-red-600">Error: {error}</p>}
         {data ? (
-          <div className="p-4 bg-gray-50 rounded-lg">
+          <div className="p-4 bg-gray-50 rounded-lg text-gray-700">
             <p>ID: {data.id}</p>
             <p>名称: {data.stateName}</p>
             <p>欢迎: {data.population}</p>
