@@ -1,42 +1,46 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { hooks } from '@/connector/metaMask';
-import InfoContractABI from '@/abis/AShuInfo.json';
-import { BigNumber } from '@ethersproject/bignumber';
-import { AShuInfo, AShuInfo__factory } from '@/types/ethers-contracts';
-
-// 合约地址
-const CONTRACT_ADDRESS = InfoContractABI.networks['5777'].address;
+import { AShuInfo } from '@/types/ethers-contracts'; // 导入 AShuInfo 类型
 
 const InfoContractInterface = () => {
-  // 和钱包实例相关
   const { useProvider, useAccounts } = hooks;
-  const accounts = useAccounts(); // 获取账户
-  const account = accounts?.[0]; // 获取第一个账户
-  const provider = useProvider(); // 获取总操作控制器
+  const accounts = useAccounts();
+  const account = accounts?.[0];
+  const provider = useProvider();
 
-  // 页面操作相关
-  const [contract, setContract] = useState<AShuInfo | null>(null); // 定义一个合约
-  const [inputName, setInputName] = useState(''); // 姓名输入框
-  const [inputAge, setInputAge] = useState(''); // 年龄输入框
-  const [contractInfo, setContractInfo] = useState({ name: '', age: '' }); // 合约初始化信息
-  const [loading, setLoading] = useState(false); // 加载状态
-  const [error, setError] = useState(''); // 错误信息
+  const [contract, setContract] = useState<AShuInfo | null>(null); // 显式声明类型
+  const [inputName, setInputName] = useState('');
+  const [inputAge, setInputAge] = useState('');
+  const [contractInfo, setContractInfo] = useState({ name: '', age: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     if (provider && account) {
-      const signer = provider.getSigner();
-      const contractInstance = AShuInfo__factory.connect(CONTRACT_ADDRESS, signer);
-      setContract(contractInstance);
+      const initializeContract = async () => {
+        const InfoContractABI = (await import('@/abis/AShuInfo.json')).default;
+        const { AShuInfo__factory } = await import('@/types/ethers-contracts');
+        
+        const CONTRACT_ADDRESS = InfoContractABI.networks['5777'].address;
+        const signer = provider.getSigner();
+        const contractInstance = AShuInfo__factory.connect(CONTRACT_ADDRESS, signer);
+        setContract(contractInstance); // TypeScript 现在知道 contractInstance 是 AShuInfo 类型
 
-      contractInstance.on('Instructor', (name: string, age: BigNumber) => {
-        console.log('Instructor event:', name, age.toString());
-        handleGetInfo();
-      });
+        contractInstance.on('Instructor', (name: string, age: any) => { // age 类型改为 any 或 BigNumber
+          console.log('Instructor event:', name, age.toString());
+          handleGetInfo();
+        });
 
-      return () => {
-        contractInstance.removeAllListeners();
+        return () => {
+          contractInstance.removeAllListeners();
+        };
       };
+
+      initializeContract().catch(err => {
+        setError(err.message || 'Failed to initialize contract');
+        console.error(err);
+      });
     }
   }, [provider, account]);
 
